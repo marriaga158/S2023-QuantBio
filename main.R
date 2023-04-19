@@ -16,5 +16,27 @@ monthSheets <- lapply(excel_sheets(path), read_excel, path = path)
 
 names(monthSheets) <- sheetnames
 # issue with name here
-April22 <- monthSheets['April 2022'][1]
-April22Avg <- generate_avgs(monthSheets['April 2022'])
+April22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["April 2022"]))
+May22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["May 2022"]))
+June22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["June 2022"]))
+July22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["July 2022"]))
+August22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["August 2022"]))
+September22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["September 2022"]))
+October22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["October 2022"]))
+November22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["November 2022"]))
+December22Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["December 2022"]))
+January23Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["January 2023"]))
+February23Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["February 2023"]))
+March23Avg <- 
+  generate_avgs(do.call(rbind.data.frame, monthSheets["March 2023"]))
