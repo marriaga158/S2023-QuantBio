@@ -1,5 +1,6 @@
 library("readxl")
 library("dplyr")
+library("ggplot2")
 
 # What we need to do:
 # Separate out the average wind speeds per month per station
@@ -40,3 +41,8 @@ February23Avg <-
   generate_avgs(do.call(rbind.data.frame, monthSheets["February 2023"]))
 March23Avg <- 
   generate_avgs(do.call(rbind.data.frame, monthSheets["March 2023"]))
+
+# this doesn't really do anything useful, I just wanted to see if I could plot
+# the data
+ggplot(April22Avg, aes(x=City, y=avg)) + geom_bar(stat="identity") + 
+  theme(axis.text.x = element_text(angle = 90))
