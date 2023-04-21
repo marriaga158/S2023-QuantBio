@@ -5,11 +5,20 @@ library("ggplot2")
 # What we need to do:
 # Separate out the average wind speeds per month per station
 
+gamma <- function(x){
+  f <- function(t) {(t^(x-1)) * (exp(1)^t)}
+  integrate(f, lower = -Inf, upper = Inf)
+}
+
 generate_avgs <- function(month_data){
-  month_data %>%
+  temp <- month_data %>%
     group_by(City) %>%
     summarise(avg=mean(DailyWindSpeedAvg),
               standard_dev=sd(DailyWindSpeedAvg, na.rm=TRUE))
+  temp$k <- with(temp, (standard_dev/avg) ^ -1.086)
+  temp %>% rowwise %>%
+    mutate(a = integrate(function(x) {(t^(x-1)) * (exp(1)^t)}, lower = -Inf, upper = Inf))
+  temp
 }
 
 path <- "Wind Speed Data - April 2022 through March 2023.xlsx"
