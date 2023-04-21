@@ -8,7 +8,8 @@ library("ggplot2")
 generate_avgs <- function(month_data){
   month_data %>%
     group_by(City) %>%
-    summarise(avg=mean(DailyWindSpeedAvg))
+    summarise(avg=mean(DailyWindSpeedAvg),
+              standard_dev=sd(DailyWindSpeedAvg, na.rm=TRUE))
 }
 
 path <- "Wind Speed Data - April 2022 through March 2023.xlsx"
