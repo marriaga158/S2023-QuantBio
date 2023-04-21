@@ -5,19 +5,27 @@ library("ggplot2")
 # What we need to do:
 # Separate out the average wind speeds per month per station
 
-gamma <- function(x){
-  f <- function(t) {(t^(x-1)) * (exp(1)^t)}
-  integrate(f, lower = -Inf, upper = Inf)
-}
-
 generate_avgs <- function(month_data){
   temp <- month_data %>%
     group_by(City) %>%
-    summarise(avg=mean(DailyWindSpeedAvg),
+    summarise(num_measurements=n(),
+              avg=mean(DailyWindSpeedAvg),
               standard_dev=sd(DailyWindSpeedAvg, na.rm=TRUE))
   temp$k <- with(temp, (standard_dev/avg) ^ -1.086)
-  temp %>% rowwise %>%
-    mutate(a = integrate(function(x) {(t^(x-1)) * (exp(1)^t)}, lower = -Inf, upper = Inf))
+  #temp <- temp %>%
+  #  rowwise() %>%
+  #  mutate(a = gamma(k))
+  # temp$a <- with(temp, integrate(function(t) {(t^((1+(1/k))-1)) * (exp(1)^t)}, lower = -Inf, upper = Inf))
+  
+  # I am not entirely confident that this is the correct way to do this
+  # because plugging this into online calculators gives nonreal answers
+  temp$a <- with(temp, avg/gamma(1+(1/k)) )
+  temp$avg_monthly_weibull_wind_speed <- with(temp, a*gamma(1+(1/k)) )
+  # !!! THIS ASSUMES A 95% AIR DENSITY !!!
+  # i couldn't get air density calculations so this is
+  # what we got
+  temp$avg_monthly_weibull_power_wind_potential <-
+    with(temp, num_measurements * (0.5 * 0.95 * (avg^3) * gamma(1+3/k) ))
   temp
 }
 
